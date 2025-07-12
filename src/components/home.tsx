@@ -416,7 +416,7 @@ export default function Home() {
 
       <footer className="bg-white border-t border-gray-200 py-6 mt-12">
         <div className="container mx-auto px-4 text-center text-gray-500 text-sm">
-          <p>© {new Date().getFullYear()} OnboardEase LMS. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Citimax Group Inc.</p>
         </div>
       </footer>
     </div>
