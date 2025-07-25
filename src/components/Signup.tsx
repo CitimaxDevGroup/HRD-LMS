@@ -26,7 +26,7 @@ export default function Signup() {
 
   const departments = [
     "IT", "HR", "Finance", "Marketing", "Operations",
-    "Sales", "Customer Support", "Engineering", "Product", "Design"
+    "Sales", "Customer Support", "Engineering", "Manager", "Server"
   ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ export default function Signup() {
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!formData.name.trim()) newErrors.firstName = "Name is required";
+    if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -130,8 +130,8 @@ export default function Signup() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+            {/* Fixed Name Field - Removed Grid Container */}
+            <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
@@ -142,7 +142,6 @@ export default function Signup() {
                 required
               />
               {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
-            </div>
             </div>
 
             <div className="space-y-2">
