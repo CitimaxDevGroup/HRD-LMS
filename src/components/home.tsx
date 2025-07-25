@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Bell, LogOut, CheckCircle, BookOpen, Award, AlertTriangle } from "lucide-react";
+import { User, Bell, LogOut, CheckCircle, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
@@ -186,7 +186,7 @@ export default function Home() {
           description: courseData.description || "No description available",
           progress: courseProgress,
           status,
-          imageUrl: courseData.imageUrl || "/default-module.jpg",
+          imageUrl: courseData.imageUrl || "https://www.deandeluca.com.ph/sites/default/files/edited.jpg",
           examCompleted,
           examScore,
         });
@@ -213,18 +213,18 @@ export default function Home() {
   if (!userData) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-        <h2 className="text-2xl font-bold mb-4">Please Sign In</h2>
+        <h2 className="text-xl md:text-2xl font-bold mb-4 text-center">Please Sign In</h2>
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4">
+          <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4 w-full max-w-md">
             <div className="flex">
-              <AlertTriangle className="h-5 w-5 text-red-400" />
+              <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
               <div className="ml-3">
                 <p className="text-sm text-red-700">{error}</p>
               </div>
             </div>
           </div>
         )}
-        <Button asChild>
+        <Button asChild className="w-full max-w-xs">
           <Link to="/login">Sign In</Link>
         </Button>
       </div>
@@ -232,7 +232,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <AlertDialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -250,77 +250,79 @@ export default function Home() {
         </AlertDialogContent>
       </AlertDialog>
 
-<header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-  <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-    <div className="flex items-center space-x-4">
-      <div className="flex items-center space-x-2">
-        <img 
-          src="https://lh3.googleusercontent.com/d/1_8AYOCP4TMqxDljVtvGEseGFS_zKh9Cb" 
-          alt="Citimax Group Inc."
-          className="h-10" // Adjust height as needed
-        />
-        <h1 className="text-xl font-semibold text-gray-800">Citimax Group Inc.</h1>
-      </div>
-      <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">
-        {userData.department} Department
-      </span>
-    </div>
-
-    <div className="flex items-center space-x-4">
-      <Button variant="ghost" size="icon">
-        <Bell className="h-5 w-5" />
-      </Button>
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-            <Avatar className="h-8 w-8">
-              <AvatarImage
-                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=random`}
-                alt={userData.name}
-              />
-             <AvatarFallback>
-                {typeof userData.name === 'string' && userData.name.length > 0
-                  ? userData.name.charAt(0)
-                  : "?"}
-             </AvatarFallback>
-
-            </Avatar>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <div className="flex items-center justify-start gap-2 p-2">
-            <div className="flex flex-col space-y-1 leading-none">
-              <p className="font-medium">{userData.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {userData.email}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {userData.role}
-              </p>
-            </div>
-          </div>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setShowLogoutConfirm(true)}>
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
             <div className="flex items-center">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+              <img 
+                src="https://lh3.googleusercontent.com/d/1_8AYOCP4TMqxDljVtvGEseGFS_zKh9Cb" 
+                alt="Citimax Group Inc."
+                className="h-8 sm:h-10"
+              />
+              <h1 className="text-lg sm:text-xl font-semibold text-gray-800 ml-2 hidden xs:block">
+                Citimax Group Inc.
+              </h1>
             </div>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  </div>
-</header>
-      <main className="container mx-auto px-4 py-8">
+            <span className="text-xs sm:text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded hidden sm:block">
+              {userData.department} Department
+            </span>
+          </div>
+
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <Button variant="ghost" size="icon" className="hidden sm:flex">
+              <Bell className="h-5 w-5" />
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=random`}
+                      alt={userData.name}
+                    />
+                    <AvatarFallback>
+                      {typeof userData.name === 'string' && userData.name.length > 0
+                        ? userData.name.charAt(0)
+                        : "?"}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <div className="flex items-center justify-start gap-2 p-2">
+                  <div className="flex flex-col space-y-1 leading-none">
+                    <p className="font-medium truncate">{userData.name}</p>
+                    <p className="text-sm text-muted-foreground truncate">
+                      {userData.email}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {userData.role}
+                    </p>
+                  </div>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setShowLogoutConfirm(true)}>
+                  <div className="flex items-center">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-grow container mx-auto px-4 py-6">
         {logoutError && (
           <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
             <div className="flex">
-              <AlertTriangle className="h-5 w-5 text-red-400" />
+              <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
               <div className="ml-3">
                 <p className="text-sm text-red-700">{logoutError}</p>
               </div>
@@ -331,7 +333,7 @@ export default function Home() {
         {error && (
           <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
             <div className="flex">
-              <AlertTriangle className="h-5 w-5 text-red-400" />
+              <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-red-800">Error</h3>
                 <p className="text-sm text-red-700">{error}</p>
@@ -346,10 +348,10 @@ export default function Home() {
           </div>
         )}
 
-        <section className="mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-semibold mb-2">Welcome, {userData.name}!</h2>
-            <p className="text-gray-600 mb-4">
+        <section className="mb-6">
+          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+            <h2 className="text-xl font-semibold mb-2">Welcome, {userData.name}!</h2>
+            <p className="text-gray-600">
               {userData.role === "Admin" 
                 ? "Admin Dashboard - Manage training progress"
                 : "Complete your required training modules below."}
@@ -358,8 +360,8 @@ export default function Home() {
         </section>
 
         <section>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg sm:text-xl font-semibold">
               {userData.role === "Admin" ? "All Training Modules" : "Your Training Modules"}
             </h2>
           </div>
@@ -367,7 +369,7 @@ export default function Home() {
           {modules.length === 0 ? (
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
               <div className="flex">
-                <AlertTriangle className="h-5 w-5 text-yellow-400" />
+                <AlertTriangle className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-0.5" />
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-yellow-800">No Modules Available</h3>
                   <p className="text-sm text-yellow-700">
@@ -377,33 +379,47 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {modules.map((module) => (
                 <div 
                   key={module.id} 
-                  className="border rounded-lg overflow-hidden shadow-sm bg-white hover:shadow-md transition-shadow"
+                  className="border rounded-lg overflow-hidden shadow-sm bg-white hover:shadow-md transition-shadow h-full flex flex-col"
                 >
-                  <div className="p-4">
-                    <h3 className="font-bold text-lg mb-2">{module.title}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{module.description}</p>
+                  {/* Thumbnail Image */}
+                  <div className="w-full h-48 overflow-hidden">
+                    <img
+                      src={module.imageUrl}
+                      alt={module.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://www.deandeluca.com.ph/sites/default/files/edited.jpg";
+                      }}
+                    />
+                  </div>
+                  
+                  <div className="p-6 flex-grow flex flex-col">
+                    <h3 className="font-bold text-lg mb-3">{module.title}</h3>
+                    <p className="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">
+                      {module.description}
+                    </p>
                     
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-wrap justify-between items-center gap-2 mt-auto">
                       {module.status === "completed" ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          <CheckCircle className="h-3 w-3 mr-1" />
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          <CheckCircle className="h-4 w-4 mr-1" />
                           Completed
                         </span>
                       ) : module.status === "in-progress" ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                           In Progress
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                           Not Started
                         </span>
                       )}
                       
-                      <Button asChild variant="outline" size="sm">
+                      <Button asChild variant="outline" size="sm" className="whitespace-nowrap">
                         <Link to={`/module/${module.id}`}>
                           {module.status === "not-started" ? "Start" : "Continue"}
                         </Link>
@@ -417,7 +433,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="bg-white border-t border-gray-200 py-6 mt-12">
+      <footer className="bg-white border-t border-gray-200 py-4 mt-auto">
         <div className="container mx-auto px-4 text-center text-gray-500 text-sm">
           <p>© {new Date().getFullYear()} Citimax Group Inc.</p>
         </div>
