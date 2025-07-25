@@ -8,13 +8,13 @@ import { getFirestore, collection, getDocs, addDoc, doc, getDoc, setDoc, updateD
 
 // Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyC19bqYsOuXhmGNW_sDkz-Q76h9ZNjPwfw",
-  authDomain: "dnd-hrd.firebaseapp.com",
-  projectId: "dnd-hrd",
-  storageBucket: "dnd-hrd.firebasestorage.app",
-  messagingSenderId: "230470715841",
-  appId: "1:230470715841:web:85a549eaab27e20fbd4740",
-  measurementId: "G-LR6615LPGX"
+  apiKey: "AIzaSyDmzsYGRv1qh2D5v1Sh1lu-eqMpdl838dw",
+  authDomain: "dnd-hrdd.firebaseapp.com",
+  projectId: "dnd-hrdd",
+  storageBucket: "dnd-hrdd.firebasestorage.app",
+  messagingSenderId: "995703480098",
+  appId: "1:995703480098:web:3319d5b9ac8622ab538f7b",
+  measurementId: "G-Z3C7WXMN4P"
 };
 
 // Initialize Firebase

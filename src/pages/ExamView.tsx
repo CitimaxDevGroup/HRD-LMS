@@ -37,6 +37,8 @@ import { db } from "@/firebase";
 import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+import { collection, query, where, getDocs } from "firebase/firestore";
+
 interface QuizQuestion {
   question: string;
   options: string[];
@@ -80,46 +82,45 @@ const ExamView: React.FC = () => {
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false);
   const [showCertificate, setShowCertificate] = useState(false);
 
-  // Fetch quiz data and user data from Firebase
-  useEffect(() => {
-    if (!moduleId) {
-      setLoading(false);
-      return;
-    }
 
-    const fetchData = async () => {
-      try {
-        // Fetch quiz data
-        const quizRef = doc(db, "quizzes", "6valsAoRky9Zkv74pWJv");
-        const quizSnap = await getDoc(quizRef);
-        
-        if (quizSnap.exists()) {
-          const quizData = quizSnap.data() as QuizData;
-          if (quizData.courseId === moduleId) {
-            setQuiz({
-              ...quizData,
-              id: quizSnap.id
-            });
-          }
-        }
 
-        // Fetch user data if userId exists
-        if (userId) {
-          const userRef = doc(db, "users", userId);
-          const userSnap = await getDoc(userRef);
-          if (userSnap.exists()) {
-            setUserData(userSnap.data() as UserData);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // 1. Fetch quiz where courseId === moduleId
+      const quizzesRef = collection(db, "quizzes");
+      const quizQuery = query(quizzesRef, where("courseId", "==", moduleId));
+      const querySnapshot = await getDocs(quizQuery);
+
+      if (!querySnapshot.empty) {
+        const quizDoc = querySnapshot.docs[0]; // Assuming one quiz per course
+        const quizData = quizDoc.data() as QuizData;
+        setQuiz({
+          ...quizData,
+          id: quizDoc.id,
+        });
+      } else {
+        console.warn("No quiz found for moduleId:", moduleId);
       }
-    };
 
-    fetchData();
-  }, [moduleId, userId]);
+      // 2. Fetch user data if userId exists
+      if (userId) {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          setUserData(userSnap.data() as UserData);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (moduleId) fetchData(); // only fetch if moduleId is defined
+}, [moduleId, userId]);
+
 
   // Timer effect
   useEffect(() => {

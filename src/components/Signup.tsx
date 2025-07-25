@@ -12,8 +12,7 @@ import { auth, db } from "@/firebase";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -48,8 +47,7 @@ export default function Signup() {
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
-    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!formData.name.trim()) newErrors.firstName = "Name is required";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -94,8 +92,7 @@ export default function Signup() {
       const userId = generateUserId();
       await setDoc(doc(db, "users", userCredential.user.uid), {
         userId,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+        name: formData.name,
         email: formData.email,
         department: formData.department,
         role: "Employee",
@@ -135,29 +132,17 @@ export default function Signup() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  type="text"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  required
-                />
-                {errors.firstName && <p className="text-sm text-red-500">{errors.firstName}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  type="text"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  required
-                />
-                {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
-              </div>
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
+              {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
+            </div>
             </div>
 
             <div className="space-y-2">

@@ -279,9 +279,12 @@ export default function Home() {
                 src={`https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=random`}
                 alt={userData.name}
               />
-              <AvatarFallback>
-                {userData.name.charAt(0)}
-              </AvatarFallback>
+             <AvatarFallback>
+                {typeof userData.name === 'string' && userData.name.length > 0
+                  ? userData.name.charAt(0)
+                  : "?"}
+             </AvatarFallback>
+
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
